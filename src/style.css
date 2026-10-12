@@ -51,3 +51,91 @@ a {
   color: #0d0b0e;
   background: var(--color-pink);
 }
+
+/* Hero entrance animations */
+.hero-badge {
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.hero-tagline {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.hero-heading {
+  animation: fadeInUp 0.7s ease-out 0.3s both;
+}
+
+.hero-description {
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+.hero-buttons {
+  animation: fadeInUp 0.6s ease-out 0.7s both;
+}
+
+/* Scroll reveal animation */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.animate-on-scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Keyframe for fade in up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero-badge,
+  .hero-tagline,
+  .hero-heading,
+  .hero-description,
+  .hero-buttons {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-on-scroll.animate-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Fallback for browsers without JS or IntersectionObserver */
+@media (scripting: none) {
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+}

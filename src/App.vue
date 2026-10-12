@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, onUnmounted } from "vue";
 
 const menuOpen = ref(false);
 
@@ -77,6 +77,41 @@ const setActiveScreenshot = (projectNumber, index) => {
 const closeMenu = () => {
   menuOpen.value = false;
 };
+
+// Scroll reveal animation using IntersectionObserver
+let observer = null;
+
+onMounted(() => {
+  // Create observer for scroll reveal animations (works in both directions)
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Add class when entering viewport
+          entry.target.classList.add("animate-in");
+        } else {
+          // Remove class when leaving viewport to allow re-animation
+          entry.target.classList.remove("animate-in");
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    },
+  );
+
+  // Observe sections for scroll reveal
+  const sections = document.querySelectorAll(".animate-on-scroll");
+  sections.forEach((section) => observer.observe(section));
+});
+
+onUnmounted(() => {
+  // Clean up observer
+  if (observer) {
+    observer.disconnect();
+  }
+});
 </script>
 
 <template>
@@ -144,7 +179,7 @@ const closeMenu = () => {
 
         <div class="relative max-w-3xl">
           <div
-            class="mb-8 inline-flex items-center gap-3 rounded-full border border-[#493442] bg-[#171218] px-4 py-2"
+            class="mb-8 inline-flex items-center gap-3 rounded-full border border-[#493442] bg-[#171218] px-4 py-2 hero-badge"
           >
             <span class="h-2 w-2 rounded-full bg-[#f4b8d0]"></span>
             <span class="text-xs tracking-wide text-[#e5cbd8]">
@@ -153,13 +188,13 @@ const closeMenu = () => {
           </div>
 
           <p
-            class="mb-5 text-sm font-medium uppercase tracking-[0.3em] text-[#f4b8d0] sm:tracking-[0.3em] tracking-[0.15em]"
+            class="mb-5 text-sm font-medium uppercase tracking-[0.3em] text-[#f4b8d0] sm:tracking-[0.3em] tracking-[0.15em] hero-tagline"
           >
             Welcome to my little corner of the internet
           </p>
 
           <h1
-            class="text-5xl font-semibold leading-[1.08] tracking-[-0.055em] sm:text-7xl lg:text-8xl break-words"
+            class="text-5xl font-semibold leading-[1.08] tracking-[-0.055em] sm:text-7xl lg:text-8xl break-words hero-heading"
           >
             Code.
             <span class="text-[#f4b8d0]">Create.</span>
@@ -167,14 +202,14 @@ const closeMenu = () => {
           </h1>
 
           <p
-            class="mt-8 max-w-xl text-base leading-8 text-[#b8aab4] sm:text-lg"
+            class="mt-8 max-w-xl text-base leading-8 text-[#b8aab4] sm:text-lg hero-description"
           >
             I'm a developer who loves turning ideas into digital experiences.
             Here, I build software, explore AI, and experiment with things that
             make the digital world a little more interesting.
           </p>
 
-          <div class="mt-10 flex flex-wrap items-center gap-4">
+          <div class="mt-10 flex flex-wrap items-center gap-4 hero-buttons">
             <a
               href="#projects"
               class="rounded-full bg-[#f4b8d0] px-7 py-3.5 text-sm font-semibold text-[#24131c] transition hover:-translate-y-0.5 hover:bg-[#f9dce8]"
@@ -203,7 +238,7 @@ const closeMenu = () => {
       <!-- About -->
       <section
         id="about"
-        class="border-t border-white/[0.06] bg-[#110e12] px-6 py-24 lg:px-10 lg:py-28"
+        class="border-t border-white/[0.06] bg-[#110e12] px-6 py-24 lg:px-10 lg:py-28 animate-on-scroll"
       >
         <div
           class="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20"
@@ -254,7 +289,7 @@ const closeMenu = () => {
       <!-- Projects -->
       <section
         id="projects"
-        class="mx-auto max-w-6xl px-6 py-24 lg:px-10 lg:py-28"
+        class="mx-auto max-w-6xl px-6 py-24 lg:px-10 lg:py-28 animate-on-scroll"
       >
         <div
           class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"
@@ -276,7 +311,7 @@ const closeMenu = () => {
           <article
             v-for="project in projects"
             :key="project.number"
-            class="group flex flex-col rounded-2xl border border-[#352630] bg-[#171218] p-7 transition duration-300 hover:-translate-y-1 hover:border-[#f4b8d0]/40 sm:p-9"
+            class="group flex flex-col rounded-2xl border border-[#352630] bg-[#171218] p-7 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-[#f4b8d0]/10 hover:border-[#f4b8d0]/40 sm:p-9"
           >
             <div class="flex items-start justify-between gap-4">
               <span class="text-xs tracking-[0.2em] text-[#8f818b]">
@@ -399,7 +434,7 @@ const closeMenu = () => {
       <!-- Contact -->
       <section
         id="contact"
-        class="border-t border-white/[0.06] bg-[#110e12] px-6 py-24 lg:px-10 lg:py-28"
+        class="border-t border-white/[0.06] bg-[#110e12] px-6 py-24 lg:px-10 lg:py-28 animate-on-scroll"
       >
         <div class="mx-auto max-w-3xl text-center">
           <p class="section-label">03 / LET'S CONNECT</p>
