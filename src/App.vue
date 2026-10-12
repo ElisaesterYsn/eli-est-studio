@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 const menuOpen = ref(false);
 
@@ -16,6 +16,24 @@ const projects = [
     color: "pink",
     url: "", // Add your deployed project URL later
     repoUrl: "https://github.com/ElisaesterYsn/JomBarter",
+    screenshots: [
+      {
+        src: "/images/JomBarter1.png",
+        alt: "JomBarter home page showing featured barter listings",
+      },
+      {
+        src: "/images/JomBarter2.png",
+        alt: "JomBarter item detail view with exchange options",
+      },
+      {
+        src: "/images/JomBarter3.png",
+        alt: "JomBarter user profile and active barter history",
+      },
+      {
+        src: "/images/JomBarter4.png",
+        alt: "JomBarter search and filter interface",
+      },
+    ],
   },
   {
     number: "02",
@@ -29,8 +47,32 @@ const projects = [
     color: "plum",
     url: "", // Add your deployed project URL later
     repoUrl: "https://github.com/ElisaesterYsn/TARO-AI-ChatBot",
+    screenshots: [
+      {
+        src: "/images/Taro1.png",
+        alt: "TARO AI chat interface with conversation history",
+      },
+      {
+        src: "/images/Taro2.png",
+        alt: "TARO AI settings panel showing model configuration",
+      },
+      {
+        src: "/images/Taro3.png",
+        alt: "TARO AI responding to natural language queries",
+      },
+    ],
   },
 ];
+
+// Track active screenshot index for each project
+const activeScreenshot = reactive({});
+projects.forEach((project) => {
+  activeScreenshot[project.number] = 0;
+});
+
+const setActiveScreenshot = (projectNumber, index) => {
+  activeScreenshot[projectNumber] = index;
+};
 
 const closeMenu = () => {
   menuOpen.value = false;
@@ -234,7 +276,7 @@ const closeMenu = () => {
           <article
             v-for="project in projects"
             :key="project.number"
-            class="group flex min-h-[360px] flex-col rounded-2xl border border-[#352630] bg-[#171218] p-7 transition duration-300 hover:-translate-y-1 hover:border-[#f4b8d0]/40 sm:p-9"
+            class="group flex flex-col rounded-2xl border border-[#352630] bg-[#171218] p-7 transition duration-300 hover:-translate-y-1 hover:border-[#f4b8d0]/40 sm:p-9"
           >
             <div class="flex items-start justify-between gap-4">
               <span class="text-xs tracking-[0.2em] text-[#8f818b]">
@@ -251,8 +293,50 @@ const closeMenu = () => {
               </span>
             </div>
 
+            <!-- Screenshot Gallery -->
+            <div v-if="project.screenshots" class="mt-6">
+              <!-- Main Screenshot Display -->
+              <div
+                class="overflow-hidden rounded-xl border border-[#352630] bg-[#0d0b0e]"
+              >
+                <img
+                  :src="
+                    project.screenshots[activeScreenshot[project.number]].src
+                  "
+                  :alt="
+                    project.screenshots[activeScreenshot[project.number]].alt
+                  "
+                  class="w-full h-48 object-cover transition-opacity duration-300"
+                  loading="lazy"
+                />
+              </div>
+
+              <!-- Thumbnail Navigation -->
+              <div class="mt-3 flex gap-2 overflow-x-auto pb-2">
+                <button
+                  v-for="(screenshot, index) in project.screenshots"
+                  :key="index"
+                  @click="setActiveScreenshot(project.number, index)"
+                  :class="[
+                    'flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200',
+                    activeScreenshot[project.number] === index
+                      ? 'border-[#f4b8d0] ring-2 ring-[#f4b8d0]/20'
+                      : 'border-[#352630] hover:border-[#f4b8d0]/60',
+                  ]"
+                  :aria-label="`View screenshot ${index + 1} of ${project.name}`"
+                >
+                  <img
+                    :src="screenshot.src"
+                    :alt="screenshot.alt"
+                    class="w-16 h-12 object-cover"
+                    loading="lazy"
+                  />
+                </button>
+              </div>
+            </div>
+
             <p
-              class="mt-10 text-[10px] font-medium tracking-[0.22em] text-[#b8aab4]"
+              class="mt-6 text-[10px] font-medium tracking-[0.22em] text-[#b8aab4]"
             >
               {{ project.category }}
             </p>
@@ -390,6 +474,25 @@ const closeMenu = () => {
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.2em;
+}
+
+/* Custom scrollbar for thumbnail navigation */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #171218;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #352630;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #493442;
 }
 
 @media (prefers-reduced-motion: reduce) {
