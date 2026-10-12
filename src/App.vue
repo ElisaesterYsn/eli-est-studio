@@ -129,8 +129,9 @@ onUnmounted(() => {
           class="text-lg font-semibold tracking-tight"
           @click="closeMenu"
         >
-          Eli.Est<span class="text-[#f4b8d0]">.</span>
-          <span class="font-normal text-[#b8aab4]">Studio</span>
+          Eli<span class="text-[#f4b8d0]"></span>
+          <span class="font-normal text-[#b8aab4]">eSt</span>
+          <span class="font-normal text-[#f4b8d0]">udio</span>
         </a>
 
         <button
@@ -263,7 +264,7 @@ onUnmounted(() => {
               building, breaking things, and making them better.
             </p>
             <p>
-              <span class="text-[#f9edf3]">Eli.Est. Studio</span> is where I
+              <span class="text-[#f9edf3]">ElieStudio Studio</span> is where I
               document that journey and share the things I'm creating along the
               way.
             </p>
@@ -528,7 +529,7 @@ onUnmounted(() => {
           href="#home"
           class="text-sm font-medium text-[#f9edf3] hover:text-[#f4b8d0] transition"
         >
-          Eli.Est<span class="text-[#f4b8d0]">.</span> Studio
+          ElieStudio<span class="text-[#f4b8d0]">.</span> Studio
         </a>
         <p class="hidden sm:block">
           Designed with intention. Built with curiosity.
@@ -543,7 +544,7 @@ onUnmounted(() => {
           >
             GitHub ↗
           </a>
-          <p>© {{ new Date().getFullYear() }} Eli.Est. Studio</p>
+          <p>© {{ new Date().getFullYear() }} ElieStudio Studio</p>
         </div>
       </div>
     </footer>
